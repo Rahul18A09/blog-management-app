@@ -9,8 +9,9 @@ const SideBar = () => {
   useEffect(() => {
     const fetchPopularBlogs = async () => {
       try {
-        const res = await fetch("/api/blogsData.json");
-        const data = await res.json();
+        const res = await fetch("http://localhost:5000/api/blogs");
+        let data = await res.json();
+        data = data.map(item => ({...item, id: item._id, author: item.authorName || item.author}));
 
         // Example: get latest 5 blogs
         const sorted = [...data].sort(

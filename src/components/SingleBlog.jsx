@@ -119,14 +119,21 @@ const SingleBlog = () => {
 
   useEffect(() => {
     const fetchBlog = async () => {
-      const res = await fetch("/api/blogsData.json");
-      const data = await res.json();
-
-      const selectedBlog = data.find(
-        (item) => String(item.id) === String(id)
-      );
-
-      setBlog(selectedBlog);
+      try {
+        const res = await fetch(`http://localhost:5000/api/blogs/${id}`);
+        if (res.ok) {
+          const data = await res.json();
+          setBlog({
+            ...data,
+            id: data._id,
+            author: data.authorName || (data.author && data.author.name) || "Unknown Author"
+          });
+        } else {
+          console.error("Failed to fetch blog");
+        }
+      } catch (err) {
+        console.error("Error fetching single blog:", err);
+      }
     };
 
     fetchBlog();
@@ -189,27 +196,6 @@ const SingleBlog = () => {
             <p className="text-lg leading-8 text-gray-700 whitespace-pre-line">
               {content}
             </p>
-
-            <p className="mb-3 text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam tempora accusamus eaque vero iure, consectetur, sit rem commodi earum soluta quasi impedit voluptate molestiae dolorum fugit omnis voluptates doloremque facilis corrupti esse cum eos! Pariatur ipsam praesentium illo, ipsum cupiditate maxime eaque possimus voluptates quis molestiae aspernatur itaque assumenda. Magnam maiores culpa rerum voluptate libero id obcaecati quis ipsam dignissimos aliquid dolores, autem maxime. Modi architecto reprehenderit, illum distinctio molestias aliquid nisi adipisci provident quo a autem dolore quaerat quos consequatur eligendi deleniti at voluptas ducimus officiis ad doloribus necessitatibus ullam? Expedita sequi nobis quisquam fugiat iste laudantium aliquid voluptates?</p>
-
-            <p className="mb-3 text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam tempora accusamus eaque vero iure, consectetur, sit rem commodi earum soluta quasi impedit voluptate molestiae dolorum fugit omnis voluptates doloremque facilis corrupti esse cum eos! Pariatur ipsam praesentium illo, ipsum cupiditate maxime eaque possimus voluptates quis molestiae aspernatur itaque assumenda. Magnam maiores culpa rerum voluptate libero id obcaecati quis ipsam dignissimos aliquid dolores, autem maxime. Modi architecto reprehenderit, illum distinctio molestias aliquid nisi adipisci provident quo a autem dolore quaerat quos consequatur eligendi deleniti at voluptas ducimus officiis ad doloribus necessitatibus ullam? Expedita sequi nobis quisquam fugiat iste laudantium aliquid voluptates?</p>
-
-            <p className="mb-3 text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam tempora accusamus eaque vero iure, consectetur, sit rem commodi earum soluta quasi impedit voluptate molestiae dolorum fugit omnis voluptates doloremque facilis corrupti esse cum eos! Pariatur ipsam praesentium illo, ipsum cupiditate maxime eaque possimus voluptates quis molestiae aspernatur itaque assumenda. Magnam maiores culpa rerum voluptate libero id obcaecati quis ipsam dignissimos aliquid dolores, autem maxime. Modi architecto reprehenderit, illum distinctio molestias aliquid nisi adipisci provident quo a autem dolore quaerat quos consequatur eligendi deleniti at voluptas ducimus officiis ad doloribus necessitatibus ullam? Expedita sequi nobis quisquam fugiat iste laudantium aliquid voluptates?</p>
-
-            <p className="mb-3 text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam tempora accusamus eaque vero iure, consectetur, sit rem commodi earum soluta quasi impedit voluptate molestiae dolorum fugit omnis voluptates doloremque facilis corrupti esse cum eos! Pariatur ipsam praesentium illo, ipsum cupiditate maxime eaque possimus voluptates quis molestiae aspernatur itaque assumenda. Magnam maiores culpa rerum voluptate libero id obcaecati quis ipsam dignissimos aliquid dolores, autem maxime. Modi architecto reprehenderit, illum distinctio molestias aliquid nisi adipisci provident quo a autem dolore quaerat quos consequatur eligendi deleniti at voluptas ducimus officiis ad doloribus necessitatibus ullam? Expedita sequi nobis quisquam fugiat iste laudantium aliquid voluptates?</p>
-
-            <p className="mb-3 text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam tempora accusamus eaque vero iure, consectetur, sit rem commodi earum soluta quasi impedit voluptate molestiae dolorum fugit omnis voluptates doloremque facilis corrupti esse cum eos! Pariatur ipsam praesentium illo, ipsum cupiditate maxime eaque possimus voluptates quis molestiae aspernatur itaque assumenda. Magnam maiores culpa rerum voluptate libero id obcaecati quis ipsam dignissimos aliquid dolores, autem maxime. Modi architecto reprehenderit, illum distinctio molestias aliquid nisi adipisci provident quo a autem dolore quaerat quos consequatur eligendi deleniti at voluptas ducimus officiis ad doloribus necessitatibus ullam? Expedita sequi nobis quisquam fugiat iste laudantium aliquid voluptates?</p>  
-
-            <p className="mb-3 text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam tempora accusamus eaque vero iure, consectetur, sit rem commodi earum soluta quasi impedit voluptate molestiae dolorum fugit omnis voluptates doloremque facilis corrupti esse cum eos! Pariatur ipsam praesentium illo, ipsum cupiditate maxime eaque possimus voluptates quis molestiae aspernatur itaque assumenda. Magnam maiores culpa rerum voluptate libero id obcaecati quis ipsam dignissimos aliquid dolores, autem maxime. Modi architecto reprehenderit, illum distinctio molestias aliquid nisi adipisci provident quo a autem dolore quaerat quos consequatur eligendi deleniti at voluptas ducimus officiis ad doloribus necessitatibus ullam? Expedita sequi nobis quisquam fugiat iste laudantium aliquid voluptates?</p>
-
-            <p className="mb-3 text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam tempora accusamus eaque vero iure, consectetur, sit rem commodi earum soluta quasi impedit voluptate molestiae dolorum fugit omnis voluptates doloremque facilis corrupti esse cum eos! Pariatur ipsam praesentium illo, ipsum cupiditate maxime eaque possimus voluptates quis molestiae aspernatur itaque assumenda. Magnam maiores culpa rerum voluptate libero id obcaecati quis ipsam dignissimos aliquid dolores, autem maxime. Modi architecto reprehenderit, illum distinctio molestias aliquid nisi adipisci provident quo a autem dolore quaerat quos consequatur eligendi deleniti at voluptas ducimus officiis ad doloribus necessitatibus ullam? Expedita sequi nobis quisquam fugiat iste laudantium aliquid voluptates?</p>
-
-            <p className="mb-3 text-gray-500">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam tempora accusamus eaque vero iure, consectetur, sit rem commodi earum soluta quasi impedit voluptate molestiae dolorum fugit omnis voluptates doloremque facilis corrupti esse cum eos! Pariatur ipsam praesentium illo, ipsum cupiditate maxime eaque possimus voluptates quis molestiae aspernatur itaque assumenda. Magnam maiores culpa rerum voluptate libero id obcaecati quis ipsam dignissimos aliquid dolores, autem maxime. Modi architecto reprehenderit, illum distinctio molestias aliquid nisi adipisci provident quo a autem dolore quaerat quos consequatur eligendi deleniti at voluptas ducimus officiis ad doloribus necessitatibus ullam? Expedita sequi nobis quisquam fugiat iste laudantium aliquid voluptates?</p>
-
-            
-
-
-            
 
             {/* Tags */}
             {tags?.length > 0 && (
