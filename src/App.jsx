@@ -13,6 +13,7 @@ import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminCreateBlog from "./pages/admin/AdminCreateBlog";
 import AdminUpdateBlog from "./pages/admin/AdminUpdateBlog";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   const location = useLocation();
@@ -33,9 +34,9 @@ function App() {
         {/* Admin Routes */}
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/create-blog" element={<AdminCreateBlog />} />
-        <Route path="/admin/update-blog/:id" element={<AdminUpdateBlog />} />
+        <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+        <Route path="/admin/create-blog" element={<ProtectedRoute><AdminCreateBlog /></ProtectedRoute>} />
+        <Route path="/admin/update-blog/:id" element={<ProtectedRoute><AdminUpdateBlog /></ProtectedRoute>} />
 
         {/* 404 Route */}
         <Route path="/*" element={<PageNotFound />} />
