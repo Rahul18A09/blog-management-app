@@ -34,16 +34,16 @@ const Footer = ({ categories = [] }) => {
           </p>
 
           <div className="flex gap-4 mt-4">
-            <a href="#" className="hover:text-orange-500 transition">
+            <a href="https://www.facebook.com/rahul_0918" target="_blank" rel="noopener noreferrer" className="hover:text-orange-500 transition">
               <FaFacebookF />
             </a>
-            <a href="#" className="hover:text-orange-500 transition">
+            <a href="https://twitter.com/rahul_0918A" className="hover:text-orange-500 transition">
               <FaTwitter />
             </a>
-            <a href="#" className="hover:text-orange-500 transition">
+            <a href="https://www.linkedin.com/in/rahul-bharada" className="hover:text-orange-500 transition">
               <FaLinkedinIn />
             </a>
-            <a href="#" className="hover:text-orange-500 transition">
+            <a href="https://github.com/Rahul18A09" className="hover:text-orange-500 transition">
               <FaGithub />
             </a>
           </div>

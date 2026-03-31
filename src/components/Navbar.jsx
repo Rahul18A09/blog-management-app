@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 // react icons
-import { FaBars, FaDribbble, FaFacebook, FaTwitter } from 'react-icons/fa'
+import { FaBars, FaDribbble, FaFacebook, FaLinkedin, FaTwitter } from 'react-icons/fa'
 import { FaXmark } from 'react-icons/fa6';
 
 
@@ -25,7 +25,7 @@ function Navbar() {
         {path:"/contact", link:"Contact"},
     ]
   return (
-   <header className='bg-black text-white fixed top-0 left-0 right-0'>
+   <header className='bg-black text-white fixed top-0 left-0 right-0 z-50'>
     <nav className='px-4 py-4 max-w-7xl mx-auto flex justify-between items-center'>
         <a href="/" className='text-xl font-bold text-white'>BlogWith<span className='text-orange-500'>Rahul</span></a>
 
@@ -51,9 +51,9 @@ function Navbar() {
         {/* menu icons */}
 
         <div className='text-white lg:flex gap-4 items-center hidden'>
-           <a href="/" className='hover:text-orange-500'><FaFacebook/></a>
-           <a href="/" className='hover:text-orange-500'><FaDribbble/></a>
-           <a href="/" className='hover:text-orange-500'><FaTwitter/></a>
+           <a href="https://www.facebook.com/rahul_0918" className='hover:text-orange-500'><FaFacebook/></a>
+           <a href="https://www.linkedin.com/in/rahul-bharada" className="hover:text-orange-500"><FaLinkedin/></a>
+           <a href="https://twitter.com/rahul_0918A" className='hover:text-orange-500'><FaTwitter/></a>
            {/* <button className='bg-orange-500 px-6 py-2 font-medium rounded hover:bg-white hover:text-orange-500 transition-all duration-200 ease-in'>Log in</button> */}
            <button
   onClick={() => setIsOpen(true)}
