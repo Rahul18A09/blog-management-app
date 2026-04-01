@@ -27,7 +27,10 @@ const Footer = ({ categories = [] }) => {
         
         {/* About */}
         <div>
-          <h2 className="text-2xl font-bold text-white mb-4">BlogWith<span className='text-orange-500'>Rahul</span></h2>
+          <Link to="/" className="flex items-center gap-2 text-2xl font-bold text-white mb-4">
+            <img src="/logo.png" alt="Brand Logo" className="h-10 w-auto" />
+            <span>BlogWith<span className="text-orange-500">Rahul</span></span>
+          </Link>
           <p className="text-sm leading-6 mb-4">
             A modern blog platform built with React & Tailwind CSS.
             Explore tutorials, tech insights, and development tips.

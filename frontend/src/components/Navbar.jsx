@@ -15,9 +15,9 @@ function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  
+
   const token = localStorage.getItem("userToken");
-  
+
   const handleLogout = () => {
     localStorage.removeItem("userToken");
     toast.success("Successfully logged out!");
@@ -38,14 +38,29 @@ function Navbar() {
   return (
     <header className="bg-black text-white fixed top-0 left-0 right-0 z-50">
       <nav className="px-4 py-4 max-w-7xl mx-auto flex justify-between items-center">
-        <a href="/" className="text-xl font-bold text-white">
+        <a href="/" className="flex items-center gap-2 text-xl font-bold text-white">
           {/* Make sure to place your logo.png in the frontend/public folder */}
           <img src="/logo.png" alt="Brand Logo" className="h-10 w-auto" />
+          <span>BlogWith<span className="text-orange-500">Rahul</span></span>
         </a>
 
         {/* navItems for lg devices */}
         <ul className="md:flex gap-12 text-lg hidden">
-          {navItems.map(({ path, link }) => (<li key={path}> <NavLink to={path} className={({ isActive }) => isActive ? "text-orange-500 font-semibold underline underline-offset-4": "text-white"}>{link} </NavLink></li>))}
+          {navItems.map(({ path, link }) => (
+            <li key={path}>
+              {" "}
+              <NavLink
+                to={path}
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-orange-500 font-semibold underline underline-offset-4"
+                    : "text-white"
+                }
+              >
+                {link}{" "}
+              </NavLink>
+            </li>
+          ))}
         </ul>
 
         {/* menu icons */}
