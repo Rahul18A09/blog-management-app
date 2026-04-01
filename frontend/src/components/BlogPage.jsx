@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaUser } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import BlogCards from "./BlogCards";
 import Pagination from "./Pagination";
 import CategorySection from "./CategorySection";
-import SideBar from "./SideBar";
 
 
 function BlogPage() {
@@ -19,6 +19,8 @@ function BlogPage() {
         const res = await fetch("http://localhost:5000/api/blogs");
         let data = await res.json();
         data = data.map(item => ({...item, id: item._id, author: item.authorName || item.author}));
+        // Sort by newest first
+        data.sort((a, b) => new Date(b.published_date) - new Date(a.published_date));
         setBlogs(data);
       } catch (error) {
         console.error(error);
@@ -34,10 +36,22 @@ function BlogPage() {
     return matchesCategory && matchesSearch;
   });
 
-  const totalPages = Math.ceil(filteredBlogs.length / pageSize);
+  const isFilterActive = selectedCategory !== "All" || searchQuery !== "";
+  
+  let featuredBlogs = [];
+  let blogsForPagination = filteredBlogs;
+
+  if (!isFilterActive && filteredBlogs.length >= 3) {
+    if (currentPage === 1) {
+      featuredBlogs = filteredBlogs.slice(0, 3);
+    }
+    blogsForPagination = filteredBlogs.slice(3);
+  }
+
+  const totalPages = Math.ceil(blogsForPagination.length / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
 
-  const paginatedBlogs = filteredBlogs.slice(startIndex, startIndex + pageSize);
+  const paginatedBlogs = blogsForPagination.slice(startIndex, startIndex + pageSize);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -67,12 +81,32 @@ function BlogPage() {
         />
       </div>
 
-      {/* Blog Cards */}
-      <div className="flex flex-col lg:flex-row gap-12 w-full max-w-7xl mx-auto">
-        <div className="w-full lg:w-3/4">
-          
+      {/* Main Content Area without Sidebar */}
+      <div className="w-full max-w-7xl mx-auto flex flex-col gap-12">
+        {/* Featured Latest Row (Only visible on page 1 without filters) */}
+        {featuredBlogs.length === 3 && (
+          <div className="mb-4">
+            <h3 className="text-2xl font-bold mb-6 border-b pb-2">Featured Latest</h3>
+            <div className="grid md:grid-cols-3 gap-8">
+              {featuredBlogs.map(blog => (
+                <Link to={`/blogs/${blog.id}`} key={blog.id} className="relative rounded-2xl overflow-hidden shadow-lg group h-72 block">
+                  <img src={blog.image} className="w-full h-full object-cover transform group-hover:scale-105 transition duration-500" alt={blog.title} />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent flex flex-col justify-end p-6">
+                    <span className="text-orange-500 font-bold text-xs uppercase mb-2 tracking-wider">{blog.category}</span>
+                    <h4 className="text-white font-bold text-lg mb-2 line-clamp-2">{blog.title}</h4>
+                    <p className="text-gray-300 text-xs flex items-center gap-2">
+                       <FaUser /> {blog.author} &bull; {blog.published_date}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="w-full">
           {/* Search Bar */}
-          <div className="mb-6 relative">
+          <div className="mb-8 relative max-w-2xl mx-auto">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
               <FaSearch className="text-gray-400" />
             </div>
@@ -84,7 +118,7 @@ function BlogPage() {
                 setSearchQuery(e.target.value);
                 setCurrentPage(1);
               }}
-              className="w-full pl-11 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 shadow-sm"
+              className="w-full pl-11 pr-4 py-3 border rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 shadow-sm transition"
             />
           </div>
 
@@ -96,15 +130,11 @@ function BlogPage() {
               <Pagination
                 onPageChange={handlePageChange}
                 currentPage={currentPage}
-                totalItems={filteredBlogs.length}
+                totalItems={blogsForPagination.length}
                 pageSize={pageSize}
               />
             )}
           </div>
-        </div>
-
-        <div className="w-full lg:w-1/4">
-          <SideBar />
         </div>
       </div>
 

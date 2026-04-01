@@ -1,21 +1,48 @@
-// import React from 'react'
 
-// function Contact() {
-//   return (
-//     <div>
-//      <div className='py-40 bg-black text-center text-white px-4'>
-//       <h1 className="text-5xl lg:text-7xl leading-snug font-bold mb-5">Contact Us Page</h1>
-//     </div>
-//     </div>
-//   )
-// }
-
-// export default Contact
-
-
-import React from "react";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 function Contact() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "General Inquiry",
+    message: ""
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.name || !formData.email || !formData.message) {
+      toast.error("Please fill all required fields");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const res = await fetch("http://localhost:5000/api/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+      });
+      
+      if (res.ok) {
+        toast.success("Message sent successfully! We'll be in touch.");
+        setFormData({ name: "", email: "", subject: "General Inquiry", message: "" });
+      } else {
+        toast.error("Failed to send message. Please try again later.");
+      }
+    } catch (error) {
+      toast.error("An error occurred while sending your message.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="bg-gray-50 mb-[-80px]">
 
@@ -66,27 +93,35 @@ function Contact() {
 
         {/* Contact Form */}
         <div className="bg-white p-8 rounded-2xl shadow-md">
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
 
             <div>
               <label className="block mb-2 font-medium">
-                Full Name
+                Full Name <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
                 placeholder="Enter your name"
                 className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
               />
             </div>
 
             <div>
               <label className="block mb-2 font-medium">
-                Email Address
+                Email Address <span className="text-red-500">*</span>
               </label>
               <input
                 type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
                 placeholder="Enter your email"
                 className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
               />
             </div>
 
@@ -95,6 +130,9 @@ function Contact() {
                 Subject
               </label>
               <select
+                name="subject"
+                value={formData.subject}
+                onChange={handleChange}
                 className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option>General Inquiry</option>
@@ -107,20 +145,25 @@ function Contact() {
 
             <div>
               <label className="block mb-2 font-medium">
-                Message
+                Message <span className="text-red-500">*</span>
               </label>
               <textarea
                 rows="5"
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
                 placeholder="Write your message..."
                 className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
               ></textarea>
             </div>
 
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
+              disabled={isSubmitting}
+              className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:bg-blue-300 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
-              Send Message
+              {isSubmitting ? "Sending..." : "Send Message"}
             </button>
 
           </form>

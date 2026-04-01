@@ -18,7 +18,7 @@ const SideBar = () => {
           (a, b) => new Date(b.published_date) - new Date(a.published_date),
         );
 
-        setPopularBlogs(sorted.slice(0, 15));
+        setPopularBlogs(sorted.slice(0, 5));
       } catch (error) {
         console.error("Error fetching popular blogs:", error);
       }

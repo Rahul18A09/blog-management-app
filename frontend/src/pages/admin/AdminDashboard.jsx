@@ -4,6 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 const AdminDashboard = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [unreadCount, setUnreadCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
   const navigate = useNavigate();
@@ -26,11 +27,29 @@ const AdminDashboard = () => {
       }
     };
 
+    const fetchMessagesCount = async (token) => {
+      try {
+        const res = await fetch("http://localhost:5000/api/messages", {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const unread = data.filter(msg => !msg.isRead).length;
+          setUnreadCount(unread);
+        }
+      } catch (error) {
+        console.error('Error fetching unread messages', error);
+      }
+    };
+
     const token = localStorage.getItem('adminToken');
     if (!token) {
       navigate('/admin/login');
     } else {
       fetchBlogs();
+      fetchMessagesCount(token);
     }
   }, [navigate]);
 
@@ -74,6 +93,12 @@ const AdminDashboard = () => {
           <div className="flex flex-wrap gap-3 items-center">
             <Link to="/" className="text-sm font-medium text-gray-500 hover:text-gray-900 transition mr-2 hidden sm:block">
               &larr; Public Site
+            </Link>
+            <Link to="/admin/messages" className="bg-blue-500 hover:bg-blue-600 shadow-lg shadow-blue-500/30 text-white px-5 py-2.5 rounded-xl font-medium transition flex items-center gap-2 relative">
+              <span>📥</span> Inbox
+              {unreadCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full border-2 border-white shadow-sm shadow-red-500">{unreadCount > 99 ? '99+' : unreadCount}</span>
+              )}
             </Link>
             <Link to="/admin/create-blog" className="bg-orange-500 hover:bg-orange-600 shadow-lg shadow-orange-500/30 text-white px-5 py-2.5 rounded-xl font-medium transition">
               + New Blog

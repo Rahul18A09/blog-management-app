@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const BlogCards = ({ blogs }) => {
   return (
-    <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8">
+    <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8">
       {blogs.length === 0 ? (
         <p>No blogs found.</p>
       ) : (

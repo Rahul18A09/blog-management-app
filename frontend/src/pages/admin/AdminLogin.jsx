@@ -25,6 +25,13 @@ const AdminLogin = () => {
       const data = await res.json();
 
       if (res.ok) {
+        // Only allow admins into the admin portal
+        if (data.role !== 'superadmin') {
+          setError("Unauthorized access. Admin privileges required.");
+          setLoading(false);
+          return;
+        }
+        
         localStorage.setItem("adminToken", data.token);
         localStorage.setItem("adminUser", JSON.stringify(data));
         navigate("/admin/dashboard");
@@ -94,21 +101,23 @@ const AdminLogin = () => {
             <label className="block text-[#fb7700] text-sm font-medium mb-2">
               Password
             </label>
-            <input
-              type="password"
-              required
-              className="w-full px-4 py-3 bg-[#f0f4ff] border border-[#d1dcf0] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#fb7700] text-black tracking-widest"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-            />
-            <button
-              type="button"
-              className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-            </button>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                required
+                className="w-full px-4 py-3 bg-[#f0f4ff] border border-[#d1dcf0] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#fb7700] text-black tracking-widest"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+              />
+              <button
+                type="button"
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
           </div>
           <div className="pt-2">
             <button
