@@ -39,7 +39,8 @@ function Navbar() {
     <header className="bg-black text-white fixed top-0 left-0 right-0 z-50">
       <nav className="px-4 py-4 max-w-7xl mx-auto flex justify-between items-center">
         <a href="/" className="text-xl font-bold text-white">
-          BlogWith<span className="text-orange-500">Rahul</span>
+          {/* Make sure to place your logo.png in the frontend/public folder */}
+          <img src="/logo.png" alt="Brand Logo" className="h-10 w-auto" />
         </a>
 
         {/* navItems for lg devices */}
