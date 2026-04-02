@@ -20,6 +20,8 @@ function Navbar() {
 
   const handleLogout = () => {
     localStorage.removeItem("userToken");
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("adminUser");
     toast.success("Successfully logged out!");
     navigate("/login");
   };

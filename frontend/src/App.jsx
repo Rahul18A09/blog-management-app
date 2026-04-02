@@ -9,14 +9,13 @@ import PageNotFound from "./pages/PageNotFound";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import SingleBlog from "./components/SingleBlog";
-import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminCreateBlog from "./pages/admin/AdminCreateBlog";
 import AdminUpdateBlog from "./pages/admin/AdminUpdateBlog";
 import AdminMessages from "./pages/admin/AdminMessages";
 import ProtectedRoute from "./components/ProtectedRoute";
 import UserProtectedRoute from "./components/UserProtectedRoute";
-import UserLogin from "./pages/UserLogin";
+import Auth from "./pages/Auth";
 import { Toaster } from "react-hot-toast";
 
 function App() {
@@ -34,12 +33,12 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/login" element={<UserLogin />} />
+        <Route path="/login" element={<Auth />} />
         <Route path="/blogs/:id" element={<UserProtectedRoute><SingleBlog/></UserProtectedRoute>}/>
 
         {/* Admin Routes */}
-        <Route path="/admin" element={<AdminLogin />} />
-        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin" element={<Auth />} />
+        <Route path="/admin/login" element={<Auth />} />
         <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
         <Route path="/admin/messages" element={<ProtectedRoute><AdminMessages /></ProtectedRoute>} />
         <Route path="/admin/create-blog" element={<ProtectedRoute><AdminCreateBlog /></ProtectedRoute>} />
