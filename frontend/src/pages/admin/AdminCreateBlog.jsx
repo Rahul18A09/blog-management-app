@@ -83,15 +83,20 @@ const AdminCreateBlog = () => {
   };
 
   return (
-    <div className="p-8 h-full overflow-y-auto">
-      <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-sm border border-slate-100 p-8">
-        <h2 className="text-2xl font-extrabold text-[#24273E] tracking-tight mb-8 pb-4 border-b border-slate-100">Create New <span className="text-orange-500">Blog</span></h2>
+    <div className="min-h-screen bg-gray-50 py-10 px-4 sm:px-6 lg:px-8 border-t-4 border-orange-500">
+      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl shadow-gray-200/50 border border-gray-100 p-6 md:p-10">
+        <div className="flex justify-between items-center pb-6 mb-8 border-b border-gray-100">
+          <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight">Create New <span className="text-orange-500">Blog</span></h2>
+          <Link to="/admin/dashboard" className="text-sm font-medium text-gray-600 hover:text-gray-900 bg-gray-50 hover:bg-gray-100 px-4 py-2 rounded-xl transition">
+            Back to Dashboard
+          </Link>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid md:grid-cols-2 gap-6">
             <div className="md:col-span-2">
-              <label className="block text-[#24273E] font-semibold mb-2">Title</label>
-              <input type="text" name="title" required value={formData.title} onChange={handleChange} className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none bg-slate-50 focus:bg-white transition" placeholder="Blog Title" />
+              <label className="block text-gray-700 font-medium mb-1">Title</label>
+              <input type="text" name="title" required value={formData.title} onChange={handleChange} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 outline-none" placeholder="Blog Title" />
             </div>
 
             <div className="md:col-span-2">

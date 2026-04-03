@@ -83,9 +83,19 @@ const AdminMessages = () => {
   };
 
   return (
-    <div className="p-8 h-full overflow-y-auto">
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-3xl font-extrabold text-[#24273E] tracking-tight mb-8">Admin <span className="text-orange-500">Inbox</span></h2>
+    <div className="min-h-screen bg-gray-50 py-10 px-4 sm:px-6 lg:px-8 border-t-4 border-orange-500">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex justify-between items-center mb-8">
+          <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">Admin <span className="text-orange-500">Inbox</span></h2>
+          <div className="flex flex-wrap gap-3 items-center">
+            <Link to="/admin/dashboard" className="text-sm font-medium text-gray-500 hover:text-gray-900 transition mr-2 hidden sm:block">
+              &larr; Back to Dashboard
+            </Link>
+            <button onClick={logout} className="bg-white border border-gray-200 shadow-sm hover:bg-gray-50 text-gray-800 px-5 py-2.5 rounded-xl font-medium transition">
+              Logout
+            </button>
+          </div>
+        </div>
 
         <div className="bg-white rounded-2xl shadow-xl shadow-gray-200/50 border border-gray-100 p-6">
           {loading ? (
