@@ -13,6 +13,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminCreateBlog from "./pages/admin/AdminCreateBlog";
 import AdminUpdateBlog from "./pages/admin/AdminUpdateBlog";
 import AdminMessages from "./pages/admin/AdminMessages";
+import AdminLayout from "./pages/admin/AdminLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import UserProtectedRoute from "./components/UserProtectedRoute";
 import Auth from "./pages/Auth";
@@ -39,10 +40,13 @@ function App() {
         {/* Admin Routes */}
         <Route path="/admin" element={<Auth />} />
         <Route path="/admin/login" element={<Auth />} />
-        <Route path="/admin/dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
-        <Route path="/admin/messages" element={<ProtectedRoute><AdminMessages /></ProtectedRoute>} />
-        <Route path="/admin/create-blog" element={<ProtectedRoute><AdminCreateBlog /></ProtectedRoute>} />
-        <Route path="/admin/update-blog/:id" element={<ProtectedRoute><AdminUpdateBlog /></ProtectedRoute>} />
+        
+        <Route element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/messages" element={<AdminMessages />} />
+          <Route path="/admin/create-blog" element={<AdminCreateBlog />} />
+          <Route path="/admin/update-blog/:id" element={<AdminUpdateBlog />} />
+        </Route>
 
         {/* 404 Route */}
         <Route path="/*" element={<PageNotFound />} />
