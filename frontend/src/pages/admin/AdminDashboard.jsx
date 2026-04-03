@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { FaArrowLeft } from 'react-icons/fa';
 
 const AdminDashboard = () => {
   const [blogs, setBlogs] = useState([]);
@@ -87,30 +88,38 @@ const AdminDashboard = () => {
   const paginatedBlogs = blogs.slice(startIndex, startIndex + pageSize);
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4 sm:px-6 lg:px-8 border-t-4 border-orange-500">
+    <div className="p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">Admin <span className="text-orange-500">Dashboard</span></h2>
-          <div className="flex flex-wrap gap-3 items-center">
-            <Link to="/" className="text-sm font-medium text-gray-500 hover:text-gray-900 transition mr-2 hidden sm:block">
-              &larr; Public Site
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-3xl font-extrabold tracking-tight text-gray-900">Dashboard <span className="text-orange-500">Overview</span></h2>
+          <div className="flex items-center gap-4">
+            <Link to="/" className="flex items-center gap-2 px-5 bg-white border border-gray-200 shadow-sm py-2.5 rounded-xl text-gray-700 font-medium hover:bg-gray-50 transition">
+              <FaArrowLeft className="text-gray-500" /> Go to Website
             </Link>
-            <Link to="/admin/messages" className="bg-blue-500 hover:bg-blue-600 shadow-lg shadow-blue-500/30 text-white px-5 py-2.5 rounded-xl font-medium transition flex items-center gap-2 relative">
-              <span>📥</span> Inbox
-              {unreadCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full border-2 border-white shadow-sm shadow-red-500">{unreadCount > 99 ? '99+' : unreadCount}</span>
-              )}
+            <Link to="/admin/create-blog" className="flex items-center gap-2 px-5 text-white transition bg-orange-500 shadow-lg hover:bg-orange-600 py-2.5 rounded-xl font-medium shadow-orange-500/30">
+              <span>+</span> New Blog
             </Link>
-            <Link to="/admin/create-blog" className="bg-orange-500 hover:bg-orange-600 shadow-lg shadow-orange-500/30 text-white px-5 py-2.5 rounded-xl font-medium transition">
-              + New Blog
-            </Link>
-            <button onClick={logout} className="bg-white border border-gray-200 shadow-sm hover:bg-gray-50 text-gray-800 px-5 py-2.5 rounded-xl font-medium transition">
-              Logout
-            </button>
+          </div>
+        </div>
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col items-center justify-center text-center">
+            <h3 className="text-gray-500 font-medium mb-2">Total Blogs</h3>
+            <p className="text-4xl font-extrabold text-gray-800">{blogs.length}</p>
+          </div>
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col items-center justify-center text-center">
+            <h3 className="text-gray-500 font-medium mb-2">Unread Messages</h3>
+            <p className="text-4xl font-extrabold text-blue-600">{unreadCount}</p>
+          </div>
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col items-center justify-center text-center">
+            <h3 className="text-gray-500 font-medium mb-2">Latest Publication</h3>
+            <p className="text-xl font-bold text-gray-800 truncate w-full px-4">{blogs.length > 0 ? blogs[0].title : 'None'}</p>
           </div>
         </div>
 
         <div className="bg-white rounded-2xl shadow-xl shadow-gray-200/50 border border-gray-100 p-6">
+          <h3 className="text-xl font-bold text-gray-800 mb-4 border-b pb-4">Manage Blogs</h3>
 
         {loading ? (
           <div className="text-center py-10 text-gray-500">Loading blogs...</div>
@@ -119,11 +128,11 @@ const AdminDashboard = () => {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider font-semibold border-b">
-                  <th className="p-4 border-b">Thumbnail</th>
+                  <th className="p-4 border-b rounded-tl-lg">Thumbnail</th>
                   <th className="p-4 border-b">Title</th>
                   <th className="p-4 border-b">Category</th>
                   <th className="p-4 border-b">Author</th>
-                  <th className="p-4 border-b text-center">Actions</th>
+                  <th className="p-4 border-b text-center rounded-tr-lg">Actions</th>
                 </tr>
               </thead>
               <tbody className="text-sm">

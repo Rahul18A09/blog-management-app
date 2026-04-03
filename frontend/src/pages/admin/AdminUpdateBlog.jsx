@@ -114,7 +114,7 @@ const AdminUpdateBlog = () => {
   if (loading) return <div className="text-center py-32">Loading blog details...</div>;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-4 sm:px-6 lg:px-8 border-t-4 border-orange-500">
+    <div className="p-4 sm:p-6 lg:p-8">
       <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl shadow-gray-200/50 border border-gray-100 p-6 md:p-10">
         <div className="flex justify-between items-center pb-6 mb-8 border-b border-gray-100">
           <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight">Update <span className="text-orange-500">Blog</span></h2>
