@@ -68,7 +68,7 @@ function BlogPage() {
     }
   }, [filteredBlogs, totalPages]);
 
-  const categories = ["All", ...new Set(blogs.map((blog) => blog.category))];
+  const categories = ["All", ...new Set(blogs.map((blog) => blog.category).filter(c => c && c.trim() !== ""))];
 
   return (
     <div className="p-8 flex flex-col items-center">

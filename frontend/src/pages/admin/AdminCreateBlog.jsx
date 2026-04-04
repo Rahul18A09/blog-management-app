@@ -16,6 +16,24 @@ const AdminCreateBlog = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const [existingCategories, setExistingCategories] = useState([]);
+
+  React.useEffect(() => {
+    const fetchCats = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/blogs");
+        if(res.ok) {
+          const data = await res.json();
+          const cats = [...new Set(data.map(b => b.category).filter(c => c && c.trim() !== ""))];
+          setExistingCategories(cats);
+        }
+      } catch (err) {
+        console.error("Failed to fetch categories", err);
+      }
+    };
+    fetchCats();
+  }, []);
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -112,7 +130,19 @@ const AdminCreateBlog = () => {
 
             <div>
               <label className="block text-gray-700 font-medium mb-1">Category</label>
-              <input type="text" name="category" value={formData.category} onChange={handleChange} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 outline-none" placeholder="e.g. Technology" />
+              <select name="category" value={formData.category} onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 outline-none bg-white">
+                <option value="" disabled>Select Existing Category</option>
+                {existingCategories.map(cat => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+                {/* Fallback standard categories in case db is empty */}
+                {existingCategories.length === 0 && (
+                  <>
+                    <option value="Technology">Technology</option>
+                    <option value="Lifestyle">Lifestyle</option>
+                  </>
+                )}
+              </select>
             </div>
 
             <div>

@@ -109,12 +109,12 @@ const AdminDashboard = () => {
             <p className="text-4xl font-extrabold text-gray-800">{blogs.length}</p>
           </div>
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col items-center justify-center text-center">
-            <h3 className="text-gray-500 font-medium mb-2">Unread Messages</h3>
-            <p className="text-4xl font-extrabold text-blue-600">{unreadCount}</p>
-          </div>
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col items-center justify-center text-center">
             <h3 className="text-gray-500 font-medium mb-2">Latest Publication</h3>
             <p className="text-xl font-bold text-gray-800 truncate w-full px-4">{blogs.length > 0 ? blogs[0].title : 'None'}</p>
+          </div>
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col items-center justify-center text-center">
+            <h3 className="text-gray-500 font-medium mb-2">Unread Messages</h3>
+            <p className="text-4xl font-extrabold text-blue-600">{unreadCount}</p>
           </div>
         </div>
 

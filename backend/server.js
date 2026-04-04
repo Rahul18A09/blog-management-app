@@ -16,11 +16,11 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
+const path = require('path');
 const authRoutes = require('./routes/authRoutes');
 const blogRoutes = require('./routes/blogRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
 const messageRoutes = require('./routes/messageRoutes');
-const path = require('path');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/blogs', blogRoutes);

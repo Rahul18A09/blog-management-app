@@ -143,7 +143,21 @@ const AdminUpdateBlog = () => {
 
             <div>
               <label className="block text-gray-700 font-medium mb-1">Category</label>
-              <input type="text" name="category" value={formData.category} onChange={handleChange} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 outline-none" />
+              <select name="category" value={formData.category} onChange={handleChange} required className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 outline-none bg-white">
+                <option value="" disabled>Select Existing Category</option>
+                {/* Dynamically fallback to keeping existing if not tracked */}
+                <option value={formData.category}>{formData.category || 'Select Category'}</option>
+                <option value="Technology">Technology</option>
+                <option value="Health">Health</option>
+                <option value="Education">Education</option>
+                <option value="Business">Business</option>
+                <option value="Lifestyle">Lifestyle</option>
+                <option value="Sports">Sports</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Travel">Travel</option>
+                <option value="AI">AI</option>
+                <option value="Startups">Startups</option>
+              </select>
             </div>
 
             <div>

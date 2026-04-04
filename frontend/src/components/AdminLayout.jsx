@@ -21,11 +21,11 @@ const AdminLayout = () => {
 
   const menuItems = [
     { name: 'Dashboard', path: '/admin/dashboard', icon: <MdSpaceDashboard /> },
-    { name: 'Inbox', path: '/admin/messages', icon: <FaInbox /> },
     { name: 'Super Admin', path: '/admin/super-admin', icon: <FaUserShield /> },
     { name: 'Subadmin', path: '/admin/subadmin', icon: <FaUserTie /> },
     { name: 'Users', path: '/admin/users', icon: <FaUsers /> },
     { name: 'Popular Author', path: '/admin/popular-author', icon: <FaStar /> },
+    { name: 'Inbox', path: '/admin/messages', icon: <FaInbox /> },
     { name: 'Settings', path: '/admin/settings', icon: <FaCog /> },
   ];
 
