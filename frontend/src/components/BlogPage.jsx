@@ -42,9 +42,7 @@ function BlogPage() {
   let blogsForPagination = filteredBlogs;
 
   if (!isFilterActive && filteredBlogs.length >= 3) {
-    if (currentPage === 1) {
-      featuredBlogs = filteredBlogs.slice(0, 3);
-    }
+    featuredBlogs = filteredBlogs.slice(0, 3);
     blogsForPagination = filteredBlogs.slice(3);
   }
 
