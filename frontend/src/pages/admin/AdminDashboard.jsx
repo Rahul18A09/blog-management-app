@@ -18,13 +18,11 @@ const viewsData = [
   { name: 'Jun 12', views: 42000 },
 ];
 
-const categoriesData = [
+const categoriesDataMock = [
   { name: 'Technology', value: 45, color: '#FF7A00' },
   { name: 'AI', value: 20, color: '#3B82F6' },
   { name: 'Startup', value: 15, color: '#A855F7' },
-  { name: 'Marketing', value: 10, color: '#22C55E' },
-  { name: 'Others', value: 10, color: '#9CA3AF' },
-];
+]; // Fallback if no real categories
 
 const trafficData = [
   { name: 'Direct', percentage: 45, color: 'bg-orange-500' },
@@ -50,20 +48,48 @@ const topAuthors = [
 
 const AdminDashboard = () => {
   const [blogs, setBlogs] = useState([]);
+  const [stats, setStats] = useState({
+    totalUsers: 0,
+    totalBlogs: 0,
+    totalViews: 0,
+    topCategories: categoriesDataMock
+  });
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('All');
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchBlogs = async () => {
+    const fetchDashboardData = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/blogs");
-        let data = await res.json();
-        const mappedData = data.map(item => ({...item, id: item._id, author: item.authorName || item.author}));
-        mappedData.reverse();
-        setBlogs(mappedData);
+        const token = localStorage.getItem('adminToken');
+        // Fetch full stats
+        const statsRes = await fetch("http://localhost:5000/api/dashboard/stats", {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        if (statsRes.ok) {
+          const statsData = await statsRes.json();
+          setStats({
+             totalUsers: statsData.totalUsers,
+             totalBlogs: statsData.totalBlogs,
+             totalViews: statsData.totalViews,
+             topCategories: statsData.topCategories.length > 0 ? statsData.topCategories : categoriesDataMock
+          });
+          
+          // Map latest blogs for the table
+          const mappedData = statsData.latestBlogs.map(item => ({...item, id: item._id, author: item.author?.name || item.authorName || 'Admin'}));
+          setBlogs(mappedData);
+        } else {
+           console.error("Failed to fetch stats");
+           // Fallback to fetch just blogs if stats fail (e.g. auth issue)
+           const res = await fetch("http://localhost:5000/api/blogs");
+           let data = await res.json();
+           const mappedData = data.map(item => ({...item, id: item._id, author: item.authorName || item.author}));
+           mappedData.reverse();
+           setBlogs(mappedData);
+        }
       } catch (error) {
-        console.error('Error fetching blogs', error);
+        console.error('Error fetching dashboard data', error);
       } finally {
         setLoading(false);
       }
@@ -73,9 +99,15 @@ const AdminDashboard = () => {
     if (!token) {
       navigate('/admin/login');
     } else {
-      fetchBlogs();
+      fetchDashboardData();
     }
   }, [navigate]);
+
+  // Filter blogs based on tab
+  const filteredBlogs = blogs.filter(blog => {
+     if (activeTab === 'All') return true;
+     return (blog.status || 'Published') === activeTab;
+  });
 
   return (
     <div className="p-6 md:p-8 space-y-8 bg-[#F8FAFC]">
@@ -102,7 +134,7 @@ const AdminDashboard = () => {
           </div>
           <div>
             <p className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-1">Total Blogs</p>
-            <h3 className="text-2xl font-extrabold text-gray-900 mb-2">{blogs.length || 88}</h3>
+            <h3 className="text-2xl font-extrabold text-gray-900 mb-2">{stats.totalBlogs}</h3>
             <p className="text-[11px] font-semibold text-green-500 flex items-center gap-1">
               <FaArrowUp size={10} /> 12.5% <span className="text-gray-400 font-medium">from last month</span>
             </p>
@@ -116,7 +148,7 @@ const AdminDashboard = () => {
           </div>
           <div>
             <p className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-1">Total Users</p>
-            <h3 className="text-2xl font-extrabold text-gray-900 mb-2">1.2K</h3>
+            <h3 className="text-2xl font-extrabold text-gray-900 mb-2">{stats.totalUsers > 0 ? stats.totalUsers : '1.2K'}</h3>
             <p className="text-[11px] font-semibold text-green-500 flex items-center gap-1">
               <FaArrowUp size={10} /> 18.7% <span className="text-gray-400 font-medium">from last month</span>
             </p>
@@ -130,7 +162,7 @@ const AdminDashboard = () => {
           </div>
           <div>
             <p className="text-gray-500 text-xs font-bold uppercase tracking-wider mb-1">Monthly Views</p>
-            <h3 className="text-2xl font-extrabold text-gray-900 mb-2">24.8K</h3>
+            <h3 className="text-2xl font-extrabold text-gray-900 mb-2">{stats.totalViews > 0 ? stats.totalViews : '24.8K'}</h3>
             <p className="text-[11px] font-semibold text-green-500 flex items-center gap-1">
               <FaArrowUp size={10} /> 24.3% <span className="text-gray-400 font-medium">from last month</span>
             </p>
@@ -207,7 +239,7 @@ const AdminDashboard = () => {
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
-                    data={categoriesData}
+                    data={stats.topCategories}
                     cx="50%"
                     cy="50%"
                     innerRadius={60}
@@ -216,7 +248,7 @@ const AdminDashboard = () => {
                     dataKey="value"
                     stroke="none"
                   >
-                    {categoriesData.map((entry, index) => (
+                    {stats.topCategories.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
@@ -225,7 +257,7 @@ const AdminDashboard = () => {
               </ResponsiveContainer>
             </div>
             <div className="w-1/2 space-y-3">
-              {categoriesData.map((item, idx) => (
+              {stats.topCategories.map((item, idx) => (
                 <div key={idx} className="flex items-center justify-between text-sm">
                   <div className="flex items-center gap-2 text-gray-600 font-medium">
                     <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: item.color }}></div>
@@ -311,11 +343,11 @@ const AdminDashboard = () => {
                 </tr>
               </thead>
               <tbody className="text-sm">
-                {/* Mock rows for aesthetic perfection if blogs are empty, otherwise render real ones */}
-                {(blogs.length > 0 ? blogs.slice(0, 5) : Array(5).fill({
-                   title: "Consequatur volupta", 
-                   author: "Sharon Obrien", 
-                   category: "Apps", 
+                {/* Real rows */}
+                {(filteredBlogs.length > 0 ? filteredBlogs.slice(0, 5) : Array(5).fill({
+                   title: "No blogs found", 
+                   author: "N/A", 
+                   category: "N/A", 
                    status: "Published", 
                    createdAt: new Date().toISOString() 
                 })).map((blog, idx) => (

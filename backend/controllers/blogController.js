@@ -21,6 +21,10 @@ const getBlogById = async (req, res) => {
     const blog = await Blog.findById(req.params.id).populate('author', 'name email');
     
     if (blog) {
+      // Increment views
+      blog.views = (blog.views || 0) + 1;
+      await blog.save();
+      
       res.json(blog);
     } else {
       res.status(404).json({ message: 'Blog not found' });
@@ -45,7 +49,8 @@ const createBlog = async (req, res) => {
       authorPic,
       published_date,
       reading_time,
-      tags
+      tags,
+      status
     } = req.body;
 
     const blog = new Blog({
@@ -58,6 +63,7 @@ const createBlog = async (req, res) => {
       published_date,
       reading_time,
       tags,
+      status: status || 'Published',
       author: req.user._id, // Assign the superadmin as the author
     });
 
@@ -83,7 +89,8 @@ const updateBlog = async (req, res) => {
       authorPic,
       published_date,
       reading_time,
-      tags
+      tags,
+      status
     } = req.body;
 
     const blog = await Blog.findById(req.params.id);
@@ -98,6 +105,7 @@ const updateBlog = async (req, res) => {
       blog.published_date = published_date || blog.published_date;
       blog.reading_time = reading_time || blog.reading_time;
       blog.tags = tags || blog.tags;
+      blog.status = status || blog.status;
 
       const updatedBlog = await blog.save();
       res.json(updatedBlog);

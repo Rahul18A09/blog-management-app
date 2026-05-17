@@ -21,11 +21,13 @@ const authRoutes = require('./routes/authRoutes');
 const blogRoutes = require('./routes/blogRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
 const messageRoutes = require('./routes/messageRoutes');
+const dashboardRoutes = require('./routes/dashboardRoutes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/blogs', blogRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/messages', messageRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 

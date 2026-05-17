@@ -36,6 +36,15 @@ const blogSchema = mongoose.Schema(
       required: true,
       ref: 'User',
     },
+    views: {
+      type: Number,
+      default: 0,
+    },
+    status: {
+      type: String,
+      enum: ['Published', 'Draft', 'Archived'],
+      default: 'Published',
+    },
   },
   {
     timestamps: true,
